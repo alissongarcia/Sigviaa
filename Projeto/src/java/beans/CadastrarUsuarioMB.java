@@ -65,6 +65,10 @@ public class CadastrarUsuarioMB {
             }
         };
     }
+    
+    public void metodoTeste(){
+        //Para Fazer
+    }
 
     public boolean isLoginDisponivel() {
         return loginDisponivel;
