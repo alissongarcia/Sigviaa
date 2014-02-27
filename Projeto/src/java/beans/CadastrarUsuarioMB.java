@@ -68,6 +68,7 @@ public class CadastrarUsuarioMB {
     
     public void metodoTeste(){
         //Para Fazer
+        //Para fazer
     }
 
     public boolean isLoginDisponivel() {
