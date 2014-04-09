@@ -67,6 +67,17 @@ public class ManterUsuarioNegocio {
             Logger.getLogger(ManterUsuarioNegocio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public boolean verificarDisponibilidade(String username) {
+        Usuario aux = ujc.getUserByUsername(username);
+        if(aux==null){
+            return true;
+        }
+        return false;
+    }
+    
+    public Usuario getUsuario(Key key){
+        return ujc.findUsuario(key);
+    }
     public List<Usuario> getUsuarios(){
         return ujc.findUsuarioEntities();
     }

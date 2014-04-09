@@ -150,6 +150,6 @@ public class CadastrarUsuarioMB {
         String msg = "Sr(a) "+ usuario.getNome()+",\n\n seu cadastro foi realizado com sucesso."+
                 " Seus dados serão analisados e sua conta será ativada em breve. Aguarde."+
                 "\n\n Atenciosamente,\n\n A Direção";
-        sm.sendMail("nandofer.elinson@gmail.com", email, "SIGVIAA - Cadastro realizado com sucesso", msg);
+        sm.sendMail("sistemas@ceresufrn.org", email, "SIGVIAA - Cadastro realizado com sucesso", msg);
     }
 }

@@ -114,7 +114,7 @@ public class ManterUsuarioMB {
     public void setConverter(Converter converter) {
         this.converter = converter;
     }   
-    public void inserir(){
+    /*public void inserir(){
         if(usuario.getKey()!=null){
             usuario.setDepartamento(mun.getDepartamento(departamento.getKey()));
             usuario.setPermissao(mun.getGrupo(grupo.getKey()));
@@ -130,7 +130,56 @@ public class ManterUsuarioMB {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário cadastrado com sucesso!",null);  
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
+    }*/
+    
+    public void inserir(){
+        if(usuario.getKey()!=null){            
+            if(usuario.getPassword().trim().equals("")||usuario.getPassword()==null){
+                usuario.setPassword(mun.getUsuario(usuario.getKey()).getPassword());
+            }
+            if(!usuario.getUsername().equals(mun.getUsuario(usuario.getKey()).getUsername())){
+                if(mun.verificarDisponibilidade(usuario.getUsername())){
+                    usuario.setDepartamento(mun.getDepartamento(departamento.getKey()));
+                    usuario.setPermissao(mun.getGrupo(grupo.getKey()));
+                    mun.editar(usuario);
+                    this.limpar();
+                    FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário alterado com sucesso!",null);  
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                }else{
+                    FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login indisponível",null);  
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    usuario.setUsername(null);
+                }
+            }else{
+                usuario.setDepartamento(mun.getDepartamento(departamento.getKey()));
+                usuario.setPermissao(mun.getGrupo(grupo.getKey()));
+                mun.editar(usuario);
+                this.limpar();
+                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário alterado com sucesso!",null);  
+                FacesContext.getCurrentInstance().addMessage(null, msg);            
+            }            
+        }else{
+            if(usuario.getPassword().trim().equals("")||usuario.getPassword()==null){
+                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Senha obrigatória",null);  
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                usuario.setPassword(null);
+            }else{
+                if(mun.verificarDisponibilidade(usuario.getUsername())){
+                    usuario.setDepartamento(mun.getDepartamento(departamento.getKey()));
+                    usuario.setPermissao(mun.getGrupo(grupo.getKey()));
+                    mun.inserir(usuario);
+                    this.limpar();
+                    FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário cadastrado com sucesso!",null);  
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                }else{
+                    FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login indisponível",null);  
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    usuario.setUsername(null);
+                }
+            }            
+        }
     }
+    
     public void remover(){
         if(selecionado.getKey()!=null){
             mun.remover(selecionado.getKey());
@@ -150,6 +199,8 @@ public class ManterUsuarioMB {
     }
     public void carregarParaEditar(){
         usuario = selecionado;
+        departamento = selecionado.getDepartamento();
+        grupo = selecionado.getPermissao();
     }
     public void carregarValoresPadrao(){        
         usuario.setAtivo(true);
