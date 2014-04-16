@@ -86,7 +86,8 @@ public class Estado implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Estado[ id=" + key + " ]";
+        //return "modelo.Estado[ id=" + key + " ]";
+        return nome;
     }
     
 }
