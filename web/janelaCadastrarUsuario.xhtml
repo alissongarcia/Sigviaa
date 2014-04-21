@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>SIGVIAA - Cadastro de Usuário</title>
+    </h:head>
+    
+    <h:body>
+        <h:form id="form">            
+            <p:growl id="growl" sticky="true" />                   
+                    <p:panel id="dadosGerais" header="Dados Pessoais">  
+                        <p:focus context="dadosGerais"/>                                                 
+                        <h:panelGrid columns="2">
+                            <h:outputLabel for="campoMatricula" value="Matrícula *"/>
+                            <p:inputMask value="#{cadastrarUsuarioMB.usuario.matricula}" mask="999?9999999" id="campoMatricula" required="true" requiredMessage="Matrícula obrigatória." size="13" maxlength="10"/>
+                                                        
+                            <h:outputLabel for="campoDepartamento" value="Lotação: *"/>
+                            <p:selectOneMenu id="campoDepartamento" value="#{cadastrarUsuarioMB.departamento.key}" required="false" requiredMessage="Lotação obrigatória" converter="#{cadastrarUsuarioMB.converter}">
+                                
+                                <f:selectItems var="d" value="#{cadastrarUsuarioMB.departamentos}" itemLabel="#{d.nome}" itemValue="#{d.key}"/>
+                            </p:selectOneMenu>
+                            
+                            <h:outputLabel for="campoNome" value="Nome: *"/>
+                            <p:inputText value="#{cadastrarUsuarioMB.usuario.nome}" id="campoNome" required="true" requiredMessage="Nome obrigatório." size="50" maxlength="60"/>
+                             
+                            <h:outputLabel for="campoEmail" value="Email *"/>
+                            <p:inputText value="#{cadastrarUsuarioMB.usuario.email}" id="campoEmail" required="true" requiredMessage="Email obrigatório." size="50" maxlength="60"/>
+                             
+                            <h:outputText value="Telefone: " />  
+                            <p:inputMask value="#{cadastrarUsuarioMB.usuario.telefone}" id="campoTelefone" size="13" mask="(99) 9999-9999"/>
+
+                            <h:outputText value="Observação: " />
+                            <p:inputTextarea value="#{cadastrarUsuarioMB.usuario.observacao}" rows="5" cols="50" counter="counter" maxlength="200"       
+                                             counterTemplate="{0} caracteres restantes." autoResize="false"/> <br/>
+                            
+                            <h:outputText id="counter" /> 
+
+                        </h:panelGrid>  
+                    </p:panel>  
+                 
+            <p:panel id="dadosEspecificos" header="Dados Específicos">                     
+
+                        <h:panelGrid columns="2" >                             
+                            <h:outputLabel for="campoLogin" value="Login *"/>
+                            <p:inputText value="#{cadastrarUsuarioMB.usuario.username}" id="campoLogin" required="true" requiredMessage="Login obrigatório." maxlength="15">
+                                <f:ajax event="blur" render="growl" execute="@this" listener="#{cadastrarUsuarioMB.verificarDisponibilidade}"/>
+                                <f:ajax event="blur" render="campoLogin" execute="@this"/>
+                            </p:inputText>
+                            
+                            <h:outputText value="Senha: *" />  
+                            <p:password id="senha1" match="senha2" validatorMessage="As senhas não correspondem." required="true" requiredMessage="Senha obrigatória." value="#{cadastrarUsuarioMB.usuario.password}" feedback="true" promptLabel="Digite a senha." weakLabel="Fraca" goodLabel="Bom" strongLabel="Forte" maxlength="16"/>  
+
+                            <h:outputText value="Repetir senha: *" />  
+                            <p:password id="senha2" required="true" requiredMessage="Senha obrigatória." value="#{cadastrarUsuarioMB.usuario.password}" feedback="true" promptLabel="Repita a senha." weakLabel="Fraca" goodLabel="Bom" strongLabel="Forte" maxlength="16"/>  
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton id="botaoEnviar" value="Enviar"  update="form" actionListener="#{cadastrarUsuarioMB.inserir}" styleClass="ui-priority-primary" ajax="false"/>  
+                       <p:blockUI block=":form:" trigger=":form:botaoEnviar">
+                        LOADING<br />  
+                        <p:graphicImage value="/images/ajax-loader.gif"/> 
+                       </p:blockUI>
+             </p:panel>                   
+            
+        </h:form> 
+    </h:body>
+</html>

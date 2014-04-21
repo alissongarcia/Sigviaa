@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>SIGVIAA</title>
+        </f:facet>
+    </h:head>
+    <body>
+        <p:layout fullPage="true">
+
+                <p:layoutUnit  position="north" size="100" header="SIGVIAA - Sistema de Gerenciamento de Viagens Administrativas e Acadêmicas" resizable="false">                    
+                        <p:outputLabel value="Bem vindo, #{usuarioLogadoMB.usuario.nome}."/>
+                        <a href="./logout">Sair</a>             
+                </p:layoutUnit>               
+
+                <p:layoutUnit position="center">
+                    
+                    <h:form id="form">
+                        <p:menubar>
+                            <p:menuitem icon="ui-icon-home" value="Página Inicial " title="Página inicial" url="/faces/administrador/Principal.xhtml" />
+
+                            <p:submenu label="Solicitação">  
+                                <p:menuitem value="Abrir solicitação" url="#" />
+                                <p:menuitem value="Todas solicitações" url="#" />                                 
+                            </p:submenu>
+                            <p:submenu label="Cadastros">  
+                                <p:menuitem value="Cadastrar Usuário" url="janelaManterUsuario.xhtml" />
+                                <p:menuitem value="Cadastrar Motorista" url="janelaManterMotorista.xhtml" />
+                                <p:menuitem value="Cadastrar Veículo" url="janelaManterVeiculo.xhtml" />
+                                <p:menuitem value="Cadastrar Departamento" url="janelaManterDepartamento.xhtml"/>
+                                <p:menuitem value="Cadastrar Estado" url="janelaManterEstado.xhtml"/>
+                                <p:menuitem value="Cadastrar Cidade" url="janelaManterCidade.xhtml"/>
+                                <p:menuitem value="Cadastrar Viagem" url="janelaManterViagem.xhtml"/>
+                                
+                            </p:submenu>
+                                  
+                    </p:menubar>
+                    </h:form>
+                    
+                </p:layoutUnit>
+
+            </p:layout>
+    </body>
+</html>
