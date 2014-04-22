@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+        <h:head>                           
+                <title>SIGVIAA - Cadastro de Veículo</title>           
+        </h:head>
+    <h:body>
+        
+        <p:layout id="layout" fullPage="true">              
+                <p:layoutUnit  position="north" size="100" header="SIGVIAA - Sistema de Gerenciamento de Viagens Administrativas e Acadêmicas" resizable="false">                    
+                        <p:outputLabel value="Bem vindo, #{usuarioLogadoMB.usuario.nome}." style="margin-right:10px"/>
+                        <a href="./logout">Sair</a><br/>
+                        <a href="Principal.xhtml">Voltar para página inicial</a>
+                </p:layoutUnit>
+                <p:layoutUnit id="veiculoLayout" resizable="true" position="center"  >                
+                <h:form id="form">                                        
+                    <p:focus context="form"/>                
+                    <p:growl id="msg" sticky="true" />
+                    <p:panel id="formPanel" header="Veículo" toggleable="true">                        
+                        <h:panelGrid columns="2" >
+                            <h:inputHidden value="#{manterVeiculoMB.veiculo.key}" converter="#{manterVeiculoMB.converter}"/><br/>   
+                            
+                            <h:outputLabel for="campoModelo" value="Modelo: *"/>
+                            <p:inputText value="#{manterVeiculoMB.veiculo.modelo}" id="campoModelo" required="true" requiredMessage="Modelo obrigatório." size="25" maxlength="25" />                                
+                       
+                            <h:outputLabel for="campoPlaca" value="Placa: *"/>
+                            <p:inputMask value="#{manterVeiculoMB.veiculo.placa}" id="campoPlaca" mask="aaa-9999" style="text-transform:uppercase" required="true" requiredMessage="Placa obrigatória." size="10" maxlength="10"/>                                
+                                                        
+                            <h:outputLabel for="campoCNH" value="CNH requerida: *"/>
+                            <p:selectOneRadio id="campoCNH" value="#{manterVeiculoMB.veiculo.CNHReq}" required="true" requiredMessage="Categoria obrigatória">  
+                                <f:selectItem itemLabel="B " itemValue="B" />  
+                                <f:selectItem itemLabel="C " itemValue="C" />  
+                                <f:selectItem itemLabel="D " itemValue="D" />
+                                <f:selectItem itemLabel="E " itemValue="E" />
+                            </p:selectOneRadio>        
+                            <h:outputLabel for="campoLugares" value="Lugares: *" />  
+                            <p:spinner id="campoLugares" value="#{manterVeiculoMB.veiculo.capacidade}" min="1" max="50" size="2" required="true" requiredMessage="Lugares obrigatório"/>                                               
+                
+                            <h:outputText value="Ativo: " />  
+                            <p:selectBooleanCheckbox value="#{manterVeiculoMB.veiculo.ativo}"/>                       
+                    </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton id="botaoSalvar" styleClass="ui-priority-primary" value="Salvar" actionListener="#{manterVeiculoMB.inserir}" update=":form:,:form1:"/>
+                </p:panel>
+                    <p:blockUI block=":form:formPanel" trigger=":form:botaoSalvar">
+                        LOADING<br />  
+                        <p:graphicImage value="/images/ajax-loader.gif"/> 
+                    </p:blockUI>
+                </h:form>                   
+                <h:form id="form1">                   
+                        
+                    <p:panel id="tabelaPanel" >                        
+                        <p:dataTable id="tabelaVeiculo" var="v" rowKey="#{v.key}" value="#{manterVeiculoMB.veiculos}" rows="13" paginator="true"
+                                     selection="#{manterVeiculoMB.selecionado}">
+                        <f:facet name="header">  
+                                Veículos cadastrados  
+                        </f:facet>
+                        <p:column selectionMode="single" style="width: 2%"/>
+                        <p:column headerText="Id" rendered="false" >
+                            #{v.key}
+                        </p:column>
+                        <p:column headerText="Modelo" style="width: 40%">
+                            #{v.modelo}
+                        </p:column>
+                        <p:column headerText="Placa" style="width:15%">
+                            #{v.placa}                           
+                        </p:column>                        
+                        <p:column headerText="Lugares" style="width:2%">
+                            #{v.capacidade}
+                        </p:column>
+                        <p:column headerText="CNH" style="width:2%">
+                            #{v.CNHReq}
+                        </p:column>
+                        <p:column headerText="Ativo" style="width:2%">
+                            <p:selectBooleanCheckbox value="#{m.ativo}" disabled="true"/>
+                        </p:column>                        
+                        <f:facet name="footer">
+                            <p:commandButton id="editar" icon="ui-icon-pencil" update=":form:" actionListener="#{manterVeiculoMB.carregarParaEditar}"/>                            
+                            <p:blockUI block=":form:formPanel" trigger="editar">  
+                                    LOADING<br />  
+                                    <p:graphicImage value="/images/ajax-loader.gif"/> 
+                            </p:blockUI>
+                            
+                            <p:commandButton id="remover" icon="ui-icon-trash" update=":form1:tabelaPanel,:form:msg" actionListener="#{manterVeiculoMB.remover}">
+                                <p:confirm header="Confirmação" message="Deseja realmente excluir?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
+                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                            </p:confirmDialog>
+                            <p:blockUI block=":form1:tabelaVeiculo" trigger="remover">  
+                                    LOADING<br />  
+                                    <p:graphicImage value="/images/ajax-loader.gif"/> 
+                            </p:blockUI>
+                        </f:facet>
+                    </p:dataTable>                                           
+                </p:panel>
+                        <p:blockUI block="tabelaVeiculo" trigger="tabelaVeiculo">  
+                                    LOADING<br />  
+                                    <p:graphicImage value="/images/ajax-loader.gif"/> 
+                        </p:blockUI>                        
+                </h:form>                
+                </p:layoutUnit>           
+                           
+            </p:layout>            
+       </h:body>
+
+</html>

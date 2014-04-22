@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+        <h:head>                           
+                <title>SIGVIAA - Cadastro de Grupo</title>           
+        </h:head>
+    <h:body>
+        
+        <p:layout id="layout" fullPage="true">              
+                <p:layoutUnit  position="north" size="100" header="SIGVIAA - Sistema de Gerenciamento de Viagens Administrativas e Acadêmicas" resizable="false">                    
+                        <p:outputLabel value="Bem vindo, #{usuarioLogadoMB.usuario.nome}."/>
+                        <a href="./logout">Sair</a><br/>
+                        <a href="Principal.xhtml">Voltar para página inicial</a>
+                </p:layoutUnit>
+                <p:layoutUnit id="grupoLayout" resizable="true" position="center"  >                
+                <h:form id="form">                                        
+                    <p:focus context="form"/>                
+                    <p:growl id="msg" sticky="true" />
+                    <p:panel id="formPanel" header="Grupo">                        
+                        <h:panelGrid columns="2" >
+                            <h:inputHidden value="#{manterGrupoMB.grupo.key}" converter="#{manterGrupoMB.converter}"/><br/>   
+                            
+                        <h:outputLabel for="campoNome" value="Nome: *"/>
+                        <p:inputText value="#{manterGrupoMB.grupo.nome}" id="campoNome" required="true" requiredMessage="Nome obrigatório." size="50" maxlength="60"/>                                
+                        <h:outputLabel for="campoRole" value="Regra: *"/>                            
+                        <p:selectOneMenu id="campoRole" value="#{manterGrupoMB.grupo.authority}" required="true" requiredMessage="Role obrigatório">
+                            <f:selectItem itemLabel="ROLE_USER" itemValue="ROLE_USER"/>
+                            <f:selectItem itemLabel="ROLE_ADMIN" itemValue="ROLE_ADMIN"/>
+                        </p:selectOneMenu>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton id="botaoSalvar" value="Salvar" actionListener="#{manterGrupoMB.inserir}" update=":form:,:form1:" styleClass="ui-priority-primary"/>
+                </p:panel>
+                    <p:blockUI block=":form:formPanel" trigger=":form:botaoSalvar">
+                        LOADING<br />  
+                        <p:graphicImage value="/images/ajax-loader.gif"/> 
+                    </p:blockUI>
+                </h:form>                   
+                <h:form id="form1">                       
+                    <p:panel id="tabelaPanel" >                        
+                        <p:dataTable id="tabelaGrupo" var="g" rowKey="#{g}" value="#{manterGrupoMB.grupos}" rows="13" paginator="true"
+                                     selection="#{manterGrupoMB.selecionado}">
+                        <f:facet name="header">  
+                                Grupos cadastrados  
+                        </f:facet>
+                        <p:column selectionMode="single" style="width: 2%"/>
+                        <p:column headerText="Id" rendered="false" >
+                            #{g.key}
+                        </p:column>
+                        <p:column headerText="Nome">
+                            #{g.nome}
+                        </p:column>
+                        <p:column headerText="Regra">
+                            #{g.authority}
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="editar" icon="ui-icon-pencil" update=":form:" actionListener="#{manterGrupoMB.carregarParaEditar}"/>                            
+                            <p:blockUI block=":form:formPanel" trigger="editar">  
+                                    LOADING<br />  
+                                    <p:graphicImage value="/images/ajax-loader.gif"/> 
+                            </p:blockUI>
+                            
+                            <p:commandButton id="remover" icon="ui-icon-trash" update=":form1:tabelaPanel,:form:msg" actionListener="#{manterGrupoMB.remover}">
+                                <p:confirm header="Confirmação" message="Deseja realmente excluir?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
+                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                            </p:confirmDialog>
+                            <p:blockUI block=":form1:tabelaGrupo" trigger="remover">  
+                                    LOADING<br />  
+                                    <p:graphicImage value="/images/ajax-loader.gif"/> 
+                            </p:blockUI>
+                        </f:facet>
+                    </p:dataTable>                                           
+                </p:panel>
+                        <p:blockUI block="tabelaGrupo" trigger="tabelaGrupo">  
+                                    LOADING<br />  
+                                    <p:graphicImage value="/images/ajax-loader.gif"/> 
+                        </p:blockUI>                        
+                </h:form>                
+                </p:layoutUnit>           
+                           
+            </p:layout>            
+       </h:body>
+
+</html>
+

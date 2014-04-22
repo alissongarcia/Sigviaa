@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>              
+        
+        <title>SIGVIAA - Login</title>        
+    </h:head>
+    <h:body>
+        
+        <p:dialog header="Acesso ao Sistema" visible="true" closable="false" draggable="false" resizable="false" width="280">
+            
+            <p:growl id="mensagem" sticky="true" life="100"/>
+            
+            <form id="form-login" method="post" action="j_spring_security_check">
+                
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel value="Login: *" /> 
+                    <input type="text" class="input-block-level" name="j_username" required="true"/>
+                    <h:outputLabel value="Senha: * " />
+                    <input type="password" class="input-block-level" name="j_password" required="true"/>
+                    <h:outputLabel value=""/>
+                    <button id="botao" class="btn btn-primary" type="submit">Entrar</button>
+                    
+                    
+                </h:panelGrid><br/>
+                <h:link outcome="janelaCadastrarUsuario" value="Cadastrar-me"/>
+                
+                <script>
+                    document.getElementById("login").j_username.value = "#{SPRING_SECURITY_LAST_USERNAME}";
+                </script>
+                
+            </form>
+            
+        </p:dialog>
+            
+    </h:body>
+</html>
+
+
+
