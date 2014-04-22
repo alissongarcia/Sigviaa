@@ -111,9 +111,7 @@ public class ViagemJpaController implements Serializable {
             
             try {
                 em.getTransaction().rollback();
-                
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, ex.getMessage(),null);  
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+             
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

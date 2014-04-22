@@ -8,12 +8,14 @@ import com.google.appengine.api.datastore.Key;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import modelo.Veiculo;
+import modelo.Viagem;
 
 /**
  *
@@ -33,6 +35,9 @@ public class VeiculoJpaController implements Serializable {
     public void create(Veiculo veiculo) throws RollbackFailureException, Exception {
         EntityManager em = this.getEntityManager();
         try {
+            if (veiculo.getViagens() == null) {
+                veiculo.setViagens(new ArrayList<Viagem>());
+            }
             em.getTransaction().begin();
             em.persist(veiculo);
             em.getTransaction().commit();
