@@ -40,6 +40,25 @@ public class ViagemJpaController implements Serializable {
     }
 
     public void create(Viagem viagem) throws RollbackFailureException, Exception {
+        /*EntityManager em = getEntityManager();
+        try {
+        em.getTransaction().begin();
+        em.persist(viagem);
+        em.getTransaction().commit();
+        } catch (Exception ex) {
+        try {
+        em.getTransaction().rollback();
+        } catch (Exception re) {
+        throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+        }
+        System.out.println("Imprimindo...");
+        ex.printStackTrace();
+        throw ex;
+        } finally {
+        if (em != null) {
+        em.close();
+        }
+        }*/
         if (viagem.getSolicitacoes() == null) {
             viagem.setSolicitacoes(new ArrayList<Solicitacao>());
         }
@@ -74,6 +93,11 @@ public class ViagemJpaController implements Serializable {
             
             viagem.setSolicitacoes(attachedSolicitacoes);
             em.persist(viagem);
+             
+            /*if (veiculo != null) {
+                veiculo.getViagens().add(viagem);
+                veiculo = em.merge(veiculo);
+            }
             
             if (motorista != null) {
                 motorista.getViagens().add(viagem);
@@ -84,6 +108,7 @@ public class ViagemJpaController implements Serializable {
                 veiculo.getViagens().add(viagem);
                 veiculo = em.merge(veiculo);
             }
+            
             
             if (origem != null) {
                 origem.getViagens().add(viagem);
@@ -102,7 +127,7 @@ public class ViagemJpaController implements Serializable {
                     oldViagemOfSolicitacoesSolicitacao.getSolicitacoes().remove(solicitacoesSolicitacao);
                     oldViagemOfSolicitacoesSolicitacao = em.merge(oldViagemOfSolicitacoesSolicitacao);
                 }
-            }
+            }*/
             
             
             em.getTransaction().commit();
@@ -115,7 +140,8 @@ public class ViagemJpaController implements Serializable {
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
-            throw ex;
+            System.out.println("Imprimindo...");
+            ex.printStackTrace();
         } finally {
             
             if (em != null) {
@@ -155,63 +181,66 @@ public class ViagemJpaController implements Serializable {
                 destinoNew = em.getReference(destinoNew.getClass(), destinoNew.getKey());
                 viagem.setDestino(destinoNew);
             }
-            List<Solicitacao> attachedSolicitacoesNew = new ArrayList<Solicitacao>();
+            
+            viagem = em.merge(viagem);
+            
+            /*List<Solicitacao> attachedSolicitacoesNew = new ArrayList<Solicitacao>();
             for (Solicitacao solicitacoesNewSolicitacaoToAttach : solicitacoesNew) {
-                solicitacoesNewSolicitacaoToAttach = em.getReference(solicitacoesNewSolicitacaoToAttach.getClass(), solicitacoesNewSolicitacaoToAttach.getKey());
-                attachedSolicitacoesNew.add(solicitacoesNewSolicitacaoToAttach);
+            solicitacoesNewSolicitacaoToAttach = em.getReference(solicitacoesNewSolicitacaoToAttach.getClass(), solicitacoesNewSolicitacaoToAttach.getKey());
+            attachedSolicitacoesNew.add(solicitacoesNewSolicitacaoToAttach);
             }
             solicitacoesNew = attachedSolicitacoesNew;
-            viagem.setSolicitacoes(solicitacoesNew);
-            viagem = em.merge(viagem);
-            if (motoristaOld != null && !motoristaOld.equals(motoristaNew)) {
-                motoristaOld.getViagens().remove(viagem);
-                motoristaOld = em.merge(motoristaOld);
+            viagem.setSolicitacoes(solicitacoesNew);*/
+            
+            /*if (motoristaOld != null && !motoristaOld.equals(motoristaNew)) {
+            motoristaOld.getViagens().remove(viagem);
+            motoristaOld = em.merge(motoristaOld);
             }
             if (motoristaNew != null && !motoristaNew.equals(motoristaOld)) {
-                motoristaNew.getViagens().add(viagem);
-                motoristaNew = em.merge(motoristaNew);
+            motoristaNew.getViagens().add(viagem);
+            motoristaNew = em.merge(motoristaNew);
             }
             if (veiculoOld != null && !veiculoOld.equals(veiculoNew)) {
-                veiculoOld.getViagens().remove(viagem);
-                veiculoOld = em.merge(veiculoOld);
+            veiculoOld.getViagens().remove(viagem);
+            veiculoOld = em.merge(veiculoOld);
             }
             if (veiculoNew != null && !veiculoNew.equals(veiculoOld)) {
-                veiculoNew.getViagens().add(viagem);
-                veiculoNew = em.merge(veiculoNew);
+            veiculoNew.getViagens().add(viagem);
+            veiculoNew = em.merge(veiculoNew);
             }
             if (origemOld != null && !origemOld.equals(origemNew)) {
-                origemOld.getViagens().remove(viagem);
-                origemOld = em.merge(origemOld);
+            origemOld.getViagens().remove(viagem);
+            origemOld = em.merge(origemOld);
             }
             if (origemNew != null && !origemNew.equals(origemOld)) {
-                origemNew.getViagens().add(viagem);
-                origemNew = em.merge(origemNew);
+            origemNew.getViagens().add(viagem);
+            origemNew = em.merge(origemNew);
             }
             if (destinoOld != null && !destinoOld.equals(destinoNew)) {
-                destinoOld.getViagens().remove(viagem);
-                destinoOld = em.merge(destinoOld);
+            destinoOld.getViagens().remove(viagem);
+            destinoOld = em.merge(destinoOld);
             }
             if (destinoNew != null && !destinoNew.equals(destinoOld)) {
-                destinoNew.getViagens().add(viagem);
-                destinoNew = em.merge(destinoNew);
+            destinoNew.getViagens().add(viagem);
+            destinoNew = em.merge(destinoNew);
             }
             for (Solicitacao solicitacoesOldSolicitacao : solicitacoesOld) {
-                if (!solicitacoesNew.contains(solicitacoesOldSolicitacao)) {
-                    solicitacoesOldSolicitacao.setViagem(null);
-                    solicitacoesOldSolicitacao = em.merge(solicitacoesOldSolicitacao);
-                }
+            if (!solicitacoesNew.contains(solicitacoesOldSolicitacao)) {
+            solicitacoesOldSolicitacao.setViagem(null);
+            solicitacoesOldSolicitacao = em.merge(solicitacoesOldSolicitacao);
+            }
             }
             for (Solicitacao solicitacoesNewSolicitacao : solicitacoesNew) {
-                if (!solicitacoesOld.contains(solicitacoesNewSolicitacao)) {
-                    Viagem oldViagemOfSolicitacoesNewSolicitacao = solicitacoesNewSolicitacao.getViagem();
-                    solicitacoesNewSolicitacao.setViagem(viagem);
-                    solicitacoesNewSolicitacao = em.merge(solicitacoesNewSolicitacao);
-                    if (oldViagemOfSolicitacoesNewSolicitacao != null && !oldViagemOfSolicitacoesNewSolicitacao.equals(viagem)) {
-                        oldViagemOfSolicitacoesNewSolicitacao.getSolicitacoes().remove(solicitacoesNewSolicitacao);
-                        oldViagemOfSolicitacoesNewSolicitacao = em.merge(oldViagemOfSolicitacoesNewSolicitacao);
-                    }
-                }
+            if (!solicitacoesOld.contains(solicitacoesNewSolicitacao)) {
+            Viagem oldViagemOfSolicitacoesNewSolicitacao = solicitacoesNewSolicitacao.getViagem();
+            solicitacoesNewSolicitacao.setViagem(viagem);
+            solicitacoesNewSolicitacao = em.merge(solicitacoesNewSolicitacao);
+            if (oldViagemOfSolicitacoesNewSolicitacao != null && !oldViagemOfSolicitacoesNewSolicitacao.equals(viagem)) {
+            oldViagemOfSolicitacoesNewSolicitacao.getSolicitacoes().remove(solicitacoesNewSolicitacao);
+            oldViagemOfSolicitacoesNewSolicitacao = em.merge(oldViagemOfSolicitacoesNewSolicitacao);
             }
+            }
+            }*/
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -245,31 +274,31 @@ public class ViagemJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The viagem with id " + id + " no longer exists.", enfe);
             }
-            Motorista motorista = viagem.getMotorista();
+            /*Motorista motorista = viagem.getMotorista();
             if (motorista != null) {
-                motorista.getViagens().remove(viagem);
-                motorista = em.merge(motorista);
+            motorista.getViagens().remove(viagem);
+            motorista = em.merge(motorista);
             }
             Veiculo veiculo = viagem.getVeiculo();
             if (veiculo != null) {
-                veiculo.getViagens().remove(viagem);
-                veiculo = em.merge(veiculo);
+            veiculo.getViagens().remove(viagem);
+            veiculo = em.merge(veiculo);
             }
             Cidade origem = viagem.getOrigem();
             if (origem != null) {
-                origem.getViagens().remove(viagem);
-                origem = em.merge(origem);
+            origem.getViagens().remove(viagem);
+            origem = em.merge(origem);
             }
             Cidade destino = viagem.getDestino();
             if (destino != null) {
-                destino.getViagens().remove(viagem);
-                destino = em.merge(destino);
+            destino.getViagens().remove(viagem);
+            destino = em.merge(destino);
             }
             List<Solicitacao> solicitacoes = viagem.getSolicitacoes();
             for (Solicitacao solicitacoesSolicitacao : solicitacoes) {
-                solicitacoesSolicitacao.setViagem(null);
-                solicitacoesSolicitacao = em.merge(solicitacoesSolicitacao);
-            }
+            solicitacoesSolicitacao.setViagem(null);
+            solicitacoesSolicitacao = em.merge(solicitacoesSolicitacao);
+            }*/
             em.remove(viagem);
             em.getTransaction().commit();
         } catch (Exception ex) {

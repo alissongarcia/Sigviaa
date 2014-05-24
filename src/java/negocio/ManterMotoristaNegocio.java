@@ -60,6 +60,9 @@ public class ManterMotoristaNegocio {
     public List<Motorista> getMotoristas(){
         return mjc.findMotoristaEntities();
     }
+    public Motorista getMotorista(Key key){
+        return mjc.findMotorista(key);
+    }
     public int contador(){
         return mjc.getMotoristaCount();
     }

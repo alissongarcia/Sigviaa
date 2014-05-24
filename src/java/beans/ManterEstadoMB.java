@@ -44,10 +44,8 @@ public class ManterEstadoMB {
                }               
             }           
             @Override
-            public String getAsString(FacesContext fc, UIComponent uic, Object o) {               
-                
-                    return KeyFactory.keyToString((Key)o);
-                
+            public String getAsString(FacesContext fc, UIComponent uic, Object o) {                              
+                return KeyFactory.keyToString((Key)o);                
             }
         };
     }
@@ -79,7 +77,7 @@ public class ManterEstadoMB {
     }    
     public void inserir(){
         
-        if(estado.getKey()!=null){                        
+        if(estado.getKey()!=null){
             men.editar(estado);
             this.limpar();
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Estado alterado com sucesso!",null);  

@@ -5,6 +5,7 @@
 package modelo;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -30,18 +32,32 @@ public class Viagem implements Serializable {
     
     private String codigo;
     
-    @OneToMany//(mappedBy = "viagem",cascade = CascadeType.ALL)
+    @ManyToOne
+    @OneToMany //(mappedBy = "viagem",cascade = CascadeType.ALL)
     private List<Solicitacao> solicitacoes;
     
+    public List<Solicitacao> getSolicitacoes() {
+        return solicitacoes;
+    }
+
+    public void setSolicitacoes(List<Solicitacao> solicitacoes) {
+        this.solicitacoes = solicitacoes;
+    }
+    
+    @Unowned
     @ManyToOne
     private Motorista motorista;
-    @ManyToOne
+    @Unowned
     private Veiculo veiculo;
+    @Unowned
     @ManyToOne
     private Cidade origem;
+    @Unowned
     @ManyToOne
     private Cidade destino;
+    
     private Date dataSaida;
+    
     private Date dataRetorno;
     private String status;
     private String justificativa;
@@ -60,14 +76,6 @@ public class Viagem implements Serializable {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }
-
-    public List<Solicitacao> getSolicitacoes() {
-        return solicitacoes;
-    }
-
-    public void setSolicitacoes(List<Solicitacao> solicitacoes) {
-        this.solicitacoes = solicitacoes;
     }
 
     public Motorista getMotorista() {

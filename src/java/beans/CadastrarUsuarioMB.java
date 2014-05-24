@@ -7,7 +7,12 @@ package beans;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import dao.DepartamentoJpaController;
+import dao.GrupoJpaController;
+import dao.UsuarioJpaController;
+import dao.exceptions.RollbackFailureException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,8 +25,12 @@ import javax.faces.convert.Converter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.Departamento;
+import modelo.Grupo;
+import modelo.Solicitacao;
 import modelo.Usuario;
 import negocio.CadastrarUsuarioNegocio;
+import util.CriarUsuario;
+import util.EMF;
 import util.SendMail;
 
 /**
@@ -41,8 +50,13 @@ public class CadastrarUsuarioMB {
     private Converter converter;
     private boolean loginDisponivel;
     
-    public CadastrarUsuarioMB() {
-        cun = new CadastrarUsuarioNegocio();     
+    List<Usuario> usuarios;
+    
+    public CadastrarUsuarioMB() throws RollbackFailureException, Exception {
+        
+        CriarUsuario newUsuario = new CriarUsuario();
+                
+        cun = new CadastrarUsuarioNegocio();
         converter = new Converter() {
 
             @Override

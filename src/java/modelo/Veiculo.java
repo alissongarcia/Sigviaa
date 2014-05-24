@@ -5,13 +5,17 @@
 package modelo;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 import java.io.Serializable;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -31,8 +35,19 @@ public class Veiculo implements Serializable {
     private int capacidade;
     private boolean ativo;
     
-    @OneToMany//(mappedBy = "veiculo",cascade = CascadeType.ALL)
-    private List<Viagem> viagens;
+    @Unowned
+    @ManyToOne
+    private List<Viagem> viagens = new ArrayList<Viagem>();
+    
+    
+    public List<Viagem> getViagens() {
+        return viagens;
+    }
+
+    public void setViagens(List<Viagem> viagens) {
+        this.viagens = viagens;
+    }
+    
 
     public Key getKey() {
         return key;
@@ -82,14 +97,6 @@ public class Veiculo implements Serializable {
         this.ativo = ativo;
     }
 
-    public List<Viagem> getViagens() {
-        return viagens;
-    }
-
-    public void setViagens(List<Viagem> viagens) {
-        this.viagens = viagens;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 0;

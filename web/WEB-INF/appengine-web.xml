@@ -3,10 +3,11 @@
 xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
 xsi:schemaLocation='http://kenai.com/projects/nbappengine/downloads/download/schema/appengine-web.xsd appengine-web.xsd'>
     <application>sigviaa</application>
-    <version>prototipo1teste</version>
+    <version>deploytestecassio</version>
+    
     <sessions-enabled>true</sessions-enabled>
     
-    <ssl-enabled>false</ssl-enabled>
+    <!--ssl-enabled>false</ssl-enabled-->
     
     
     <threadsafe>true</threadsafe>

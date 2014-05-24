@@ -39,9 +39,18 @@ public class Usuario implements UserDetails{
     private String telefone;
     private String observacao;
     
-    
+    @Unowned
     @OneToMany(mappedBy = "solicitante",cascade = CascadeType.ALL)
-    private List<Solicitacao> solicitacoes;  
+    private List<Solicitacao> solicitacoes;
+    
+    
+    public List<Solicitacao> getSolicitacoes() {
+        return solicitacoes;
+    }
+
+    public void setSolicitacoes(List<Solicitacao> solicitacoes) {
+        this.solicitacoes = solicitacoes;
+    }
     
     @Unowned
     @ManyToOne
@@ -128,13 +137,6 @@ public class Usuario implements UserDetails{
         this.observacao = observacao;
     }
 
-    public List<Solicitacao> getSolicitacoes() {
-        return solicitacoes;
-    }
-
-    public void setSolicitacoes(List<Solicitacao> solicitacoes) {
-        this.solicitacoes = solicitacoes;
-    }
     
     public Departamento getDepartamento() {
         return departamento;

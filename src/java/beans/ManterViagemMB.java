@@ -20,6 +20,9 @@ import modelo.Motorista;
 import modelo.Solicitacao;
 import modelo.Veiculo;
 import modelo.Viagem;
+import negocio.ManterCidadeNegocio;
+import negocio.ManterMotoristaNegocio;
+import negocio.ManterVeiculoNegocio;
 import negocio.ManterViagemNegocio;
 
 /**
@@ -40,13 +43,31 @@ public class ManterViagemMB {
     private String justificativa;
     private Date dataSaida;
     private Date dataRetorno;
+   
     
-    
+    private ManterMotoristaNegocio mmn;
+    private ManterCidadeNegocio mcn;
+    private ManterVeiculoNegocio mven;
     private ManterViagemNegocio mvn;
     private Converter converter;
+    private String codigo;
+    List<Veiculo> l;
+    Veiculo veiculo2;
     
     public ManterViagemMB(){
+        
         mvn = new ManterViagemNegocio();
+        mmn = new ManterMotoristaNegocio();
+        mven = new ManterVeiculoNegocio();
+        mcn = new ManterCidadeNegocio();
+        
+        /*l = mven.getVeiculos();
+        veiculo = l.get(0);
+        veiculo2 = mven.getVeiculo(veiculo.getKey());
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, veiculo2.getModelo(),null);  
+        FacesContext.getCurrentInstance().addMessage(null, msg);*/
+        
+        
         carregarValoresPadrao();
         converter = new Converter() {
 
@@ -102,6 +123,16 @@ public class ManterViagemMB {
     
     public void inserir(){        
         if(viagem.getKey()!=null){
+            viagem.setDataRetorno(dataRetorno);
+            viagem.setDataSaida(dataSaida);
+            viagem.setDestino(mcn.getCidade(destino.getKey()));
+            viagem.setJustificativa(justificativa);
+            viagem.setMotorista(mmn.getMotorista(motorista.getKey()));
+            viagem.setOrigem(mcn.getCidade(origem.getKey()));
+            viagem.setStatus(status);
+            /*FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, veiculo.getModelo(),null);  
+            FacesContext.getCurrentInstance().addMessage(null, msg);*/
+            viagem.setVeiculo(mven.getVeiculo(veiculo.getKey()));
             mvn.editar(viagem);
             this.limpar();
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Viagem alterada com sucesso!",null);  
@@ -110,18 +141,20 @@ public class ManterViagemMB {
             
             viagem.setDataRetorno(dataRetorno);
             viagem.setDataSaida(dataSaida);
-            viagem.setDestino(destino);
+            viagem.setDestino(mcn.getCidade(destino.getKey()));
             viagem.setJustificativa(justificativa);
-            viagem.setMotorista(motorista);
-            viagem.setOrigem(origem);
+            viagem.setMotorista(mmn.getMotorista(motorista.getKey()));
+            viagem.setOrigem(mcn.getCidade(origem.getKey()));
             viagem.setStatus(status);
-            viagem.setVeiculo(veiculo);
-            viagem.setCodigo("definir");
-            viagem.setSolicitacoes(new ArrayList<Solicitacao>());
+            /*FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, veiculo.getModelo(),null);  
+            FacesContext.getCurrentInstance().addMessage(null, msg);*/
+            viagem.setVeiculo(mven.getVeiculo(veiculo.getKey()));
+            //viagem.setCodigo(getCodigo());
+            //viagem.setSolicitacoes(new ArrayList<Solicitacao>());
             
             mvn.inserir(viagem);
-            this.limpar();
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Viagem cadastrado com sucesso!",null);  
+            //this.limpar();
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Viagem Cadastrada Com Sucesso.",null);  
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
@@ -300,6 +333,20 @@ public class ManterViagemMB {
      */
     public void setDataRetorno(Date dataRetorno) {
         this.dataRetorno = dataRetorno;
+    }
+
+    /**
+     * @return the codigo
+     */
+    public String getCodigo() {
+        return codigo;
+    }
+
+    /**
+     * @param codigo the codigo to set
+     */
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
     
     

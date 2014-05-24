@@ -5,6 +5,7 @@
 package modelo;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -28,8 +29,19 @@ public class Estado implements Serializable {
     private String nome;
     private String sigla;
     
+    @Unowned
     @OneToMany (mappedBy = "estado",cascade = CascadeType.ALL)
     private List<Cidade> cidades;
+    
+    
+    public List<Cidade> getCidades() {
+        return cidades;
+    }
+
+    public void setCidades(List<Cidade> cidades) {
+        this.cidades = cidades;
+    }
+    
 
     public Key getKey() {
         return key;
@@ -55,14 +67,6 @@ public class Estado implements Serializable {
         this.sigla = sigla;
     }
 
-    public List<Cidade> getCidades() {
-        return cidades;
-    }
-
-    public void setCidades(List<Cidade> cidades) {
-        this.cidades = cidades;
-    }
-    
     
     @Override
     public int hashCode() {

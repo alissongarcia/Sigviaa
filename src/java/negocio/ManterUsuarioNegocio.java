@@ -46,7 +46,7 @@ public class ManterUsuarioNegocio {
     }
     public void editar(Usuario usuario){
         try {
-            usuario.setSolicitacoes(new ArrayList<Solicitacao>());
+            //usuario.setSolicitacoes(new ArrayList<Solicitacao>());
             ujc.edit(usuario);
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(ManterUsuarioNegocio.class.getName()).log(Level.SEVERE, null, ex);

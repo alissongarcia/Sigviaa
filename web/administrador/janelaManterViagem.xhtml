@@ -34,13 +34,13 @@
                             <h:outputLabel for="campoMotorista" value="Motorista: *"/>
                             <p:selectOneMenu id="campoMotorista" value="#{manterViagemMB.motorista.key}" required="true" requiredMessage="Motorista obrigatório" converter="#{manterViagemMB.converter}">
                                 
-                                <f:selectItems var="d" noSelectionValue="Selecione..." value="#{manterViagemMB.motoristas}" itemLabel="#{d.nome}" itemValue="#{d.key}"/>
+                                <f:selectItems var="d" value="#{manterViagemMB.motoristas}" itemLabel="#{d.nome}" itemValue="#{d.key}"/>
                             </p:selectOneMenu>
 
                             <h:outputLabel for="campoVeiculo" value="Veículo: *"/>
                             <p:selectOneMenu id="campoVeiculo" value="#{manterViagemMB.veiculo.key}" required="true" requiredMessage="Veículo obrigatório" converter="#{manterViagemMB.converter}">
                                 
-                                <f:selectItems var="d" noSelectionValue="Selecione..." value="#{manterViagemMB.veiculos}" itemLabel="#{d.modelo}" itemValue="#{d.key}"/>
+                                <f:selectItems var="d" value="#{manterViagemMB.veiculos}" itemLabel="#{d.modelo}" itemValue="#{d.key}"/>
                             </p:selectOneMenu>
 
                             <h:outputLabel for="campoOrigem" value="Cidade Origem: *"/>

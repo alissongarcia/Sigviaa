@@ -6,6 +6,7 @@ package beans;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -15,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.event.ActionEvent;
 import modelo.Veiculo;
+import modelo.Viagem;
 import negocio.ManterVeiculoNegocio;
 
 /**
@@ -93,6 +95,7 @@ public class ManterVeiculoMB {
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }else{
             veiculo.setPlaca(veiculo.getPlaca().toUpperCase());
+            veiculo.setViagens(new ArrayList<Viagem>());
             mvn.inserir(veiculo);
             this.limpar();
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Veículo cadastrado com sucesso!",null);  

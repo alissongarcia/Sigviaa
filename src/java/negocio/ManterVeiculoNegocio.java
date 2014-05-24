@@ -8,10 +8,12 @@ import com.google.appengine.api.datastore.Key;
 import dao.VeiculoJpaController;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Veiculo;
+import modelo.Viagem;
 import util.EMF;
 
 /**
@@ -27,6 +29,7 @@ public class ManterVeiculoNegocio {
     
     public void inserir(Veiculo veiculo){
         try {
+            veiculo.setViagens(new ArrayList<Viagem>());
             vjc.create(veiculo);
         } catch (RollbackFailureException ex) {
             Logger.getLogger(ManterVeiculoNegocio.class.getName()).log(Level.SEVERE, null, ex);
@@ -61,5 +64,9 @@ public class ManterVeiculoNegocio {
     }
     public int contador(){
         return vjc.getVeiculoCount();
+    }
+
+    public Veiculo getVeiculo(Key key) {
+        return vjc.findVeiculo(key);
     }
 }

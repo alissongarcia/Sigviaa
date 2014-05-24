@@ -31,27 +31,24 @@ public class ManterCidadeMB {
     private ManterCidadeNegocio mcn;
     private Converter converter;
     
-    
+     
     public ManterCidadeMB (){
         mcn = new ManterCidadeNegocio();        
         converter = new Converter() {
             
             @Override
             public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
-                if(string==null||string.equals("")){
+               if(string==null||string.equals("")){
                    return null;
-               }else{                    
-                   return KeyFactory.stringToKey(string);
-               }
-            }
-
+               }else{
+                   Key key = KeyFactory.stringToKey(string);
+                   return key;
+               }               
+            }           
             @Override
-            public String getAsString(FacesContext fc, UIComponent uic, Object o) {
-                if(o==null){
-                    return null;
-                } 
-                return KeyFactory.keyToString((Key)o);               
-            }          
+            public String getAsString(FacesContext fc, UIComponent uic, Object o) {                              
+                return KeyFactory.keyToString((Key)o);                
+            }
         };
         
     }

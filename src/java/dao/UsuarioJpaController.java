@@ -36,6 +36,23 @@ public class UsuarioJpaController implements Serializable {
     }
 
     public void create(Usuario usuario) throws RollbackFailureException, Exception {
+        /* EntityManager em = getEntityManager();
+        try {
+        em.getTransaction().begin();
+        em.persist(usuario);
+        em.getTransaction().commit();
+        } catch (Exception ex) {
+        try {
+        em.getTransaction().rollback();
+        } catch (Exception re) {
+        throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+        }
+        throw ex;
+        } finally {
+        if (em != null) {
+        em.close();
+        }
+        }*/
         if (usuario.getSolicitacoes() == null) {
             usuario.setSolicitacoes(new ArrayList<Solicitacao>());
         }

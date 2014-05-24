@@ -9,11 +9,13 @@ import dao.CidadeJpaController;
 import dao.EstadoJpaController;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Cidade;
 import modelo.Estado;
+import modelo.Viagem;
 import util.EMF;
 
 /**
@@ -31,13 +33,14 @@ public class ManterCidadeNegocio {
     public void inserir(Cidade cidade){       
         try {
             //usuario.setSolicitacoes(new ArrayList<Solicitacao>());
+            cidade.setViagens(new ArrayList<Viagem>());
             cjc.create(cidade);
         } catch (RollbackFailureException ex) {
             Logger.getLogger(ManterUsuarioNegocio.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(ManterUsuarioNegocio.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    } 
     public void editar(Cidade cidade){
         try {
             //usuario.setSolicitacoes(new ArrayList<Solicitacao>());

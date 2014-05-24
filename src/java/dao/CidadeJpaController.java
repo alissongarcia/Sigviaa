@@ -25,10 +25,9 @@ import modelo.Cidade;
 public class CidadeJpaController implements Serializable {
 
     public CidadeJpaController(EntityManagerFactory emf) {
-        
+
         this.emf = emf;
     }
-    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -36,38 +35,10 @@ public class CidadeJpaController implements Serializable {
     }
 
     public void create(Cidade cidade) throws RollbackFailureException, Exception {
-        if (cidade.getViagens() == null) {
-            cidade.setViagens(new ArrayList<Viagem>());
-        }
-        EntityManager em = this.getEntityManager();
+        /*EntityManager em = getEntityManager();
         try {
-            em.getTransaction().begin();
-            
-            Estado estado = cidade.getEstado();
-            if (estado != null) {
-                estado = em.getReference(estado.getClass(), estado.getKey());
-                cidade.setEstado(estado);
-            }
-            List<Viagem> attachedViagens = new ArrayList<Viagem>();
-            for (Viagem viagensViagemToAttach : cidade.getViagens()) {
-                viagensViagemToAttach = em.getReference(viagensViagemToAttach.getClass(), viagensViagemToAttach.getKey());
-                attachedViagens.add(viagensViagemToAttach);
-            }
-            cidade.setViagens(attachedViagens);
+            em.getTransaction().begin();            
             em.persist(cidade);
-            if (estado != null) {
-                estado.getCidades().add(cidade);
-                estado = em.merge(estado);
-            }
-            for (Viagem viagensViagem : cidade.getViagens()) {
-                Cidade oldDestinoOfViagensViagem = viagensViagem.getDestino();
-                viagensViagem.setDestino(cidade);
-                viagensViagem = em.merge(viagensViagem);
-                if (oldDestinoOfViagensViagem != null) {
-                    oldDestinoOfViagensViagem.getViagens().remove(viagensViagem);
-                    oldDestinoOfViagensViagem = em.merge(oldDestinoOfViagensViagem);
-                }
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -80,14 +51,104 @@ public class CidadeJpaController implements Serializable {
             if (em != null) {
                 em.close();
             }
+        }*/
+        if (cidade.getViagens() == null) {
+            cidade.setViagens(new ArrayList<Viagem>());
+        }
+        EntityManager em = this.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            Estado estado = cidade.getEstado();
+            if (estado != null) {
+                estado = em.getReference(estado.getClass(), estado.getKey());
+                cidade.setEstado(estado);
+            }
+            List<Viagem> attachedViagens = new ArrayList<Viagem>();
+            for (Viagem viagensViagemToAttach : cidade.getViagens()) {
+                viagensViagemToAttach = em.getReference(viagensViagemToAttach.getClass(), viagensViagemToAttach.getKey());
+                attachedViagens.add(viagensViagemToAttach);
+            }
+            cidade.setViagens(attachedViagens);
+            em.persist(cidade);
+            /*if (estado != null) {
+            estado.getCidades().add(cidade);
+            estado = em.merge(estado);
+            }
+            for (Viagem viagensViagem : cidade.getViagens()) {
+            Cidade oldDestinoOfViagensViagem = viagensViagem.getDestino();
+            viagensViagem.setDestino(cidade);
+            viagensViagem = em.merge(viagensViagem);
+            if (oldDestinoOfViagensViagem != null) {
+            oldDestinoOfViagensViagem.getViagens().remove(viagensViagem);
+            oldDestinoOfViagensViagem = em.merge(oldDestinoOfViagensViagem);
+            }
+            }*/
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            try {
+                em.getTransaction().rollback();
+
+                StackTraceElement[] element = ex.getStackTrace();
+
+                String s = ex.getClass().toString();
+
+                // imprime a classe da exception sem o "class "  
+                System.out.println("\n" + s.substring(6, s.length()));
+
+                for (int i = 0; i < element.length; i++) {
+
+                    System.out.println(
+                            "   at "
+                            + element[i].getClassName()
+                            + "."
+                            + element[i].getMethodName()
+                            + "("
+                            + element[i].getFileName()
+                            + ":"
+                            + element[i].getLineNumber()
+                            + ")");
+                }
+            } catch (Exception re) {
+                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+            }
+            throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
     }
 
     public void edit(Cidade cidade) throws NonexistentEntityException, RollbackFailureException, Exception {
+        /*EntityManager em = getEntityManager();
+        try {
+        em.getTransaction().begin();
+        cidade = em.merge(cidade);
+        em.getTransaction().commit();
+        } catch (Exception ex) {
+        try {
+        em.getTransaction().rollback();
+        } catch (Exception re) {
+        throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+        }
+        String msg = ex.getLocalizedMessage();
+        if (msg == null || msg.length() == 0) {
+        Key id = cidade.getKey();
+        if (findCidade(id) == null) {
+        throw new NonexistentEntityException("The departamento with id " + id + " no longer exists.");
+        }
+        }
+        throw ex;
+        } finally {
+        if (em != null) {
+        em.close();
+        }
+        }*/
         EntityManager em = this.getEntityManager();
         try {
             em.getTransaction().begin();
-            
+
             Cidade persistentCidade = em.find(Cidade.class, cidade.getKey());
             Estado estadoOld = persistentCidade.getEstado();
             Estado estadoNew = cidade.getEstado();
@@ -153,10 +214,34 @@ public class CidadeJpaController implements Serializable {
     }
 
     public void destroy(Key id) throws NonexistentEntityException, RollbackFailureException, Exception {
+        /*EntityManager em = getEntityManager();
+        try {
+        em.getTransaction().begin();
+        Cidade departamento;
+        try {
+        departamento = em.getReference(Cidade.class, id);
+        departamento.getKey();
+        } catch (EntityNotFoundException enfe) {
+        throw new NonexistentEntityException("The departamento with id " + id + " no longer exists.", enfe);
+        }
+        em.remove(departamento);
+        em.getTransaction().commit();
+        } catch (Exception ex) {
+        try {
+        em.getTransaction().rollback();
+        } catch (Exception re) {
+        throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+        }
+        throw ex;
+        } finally {
+        if (em != null) {
+        em.close();
+        }
+        }*/
         EntityManager em = this.getEntityManager();
         try {
             em.getTransaction().begin();
-            
+
             Cidade cidade;
             try {
                 cidade = em.getReference(Cidade.class, id);
@@ -230,5 +315,4 @@ public class CidadeJpaController implements Serializable {
             em.close();
         }
     }
-    
 }

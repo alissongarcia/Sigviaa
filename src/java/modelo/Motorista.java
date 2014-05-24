@@ -5,6 +5,7 @@
 package modelo;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -33,8 +34,19 @@ public class Motorista implements Serializable {
     private String email;
     private boolean ativo;
     
-    @OneToMany(mappedBy = "motorista",cascade = CascadeType.ALL)
+    @Unowned
+    @OneToMany
     private List<Viagem> viagens;
+    
+    
+    public List<Viagem> getViagens() {
+        return viagens;
+    }
+
+    public void setViagens(List<Viagem> viagens) {
+        this.viagens = viagens;
+    }
+    
 
     public Key getKey() {
         return key;
@@ -100,14 +112,6 @@ public class Motorista implements Serializable {
         this.ativo = ativo;
     }
 
-    public List<Viagem> getViagens() {
-        return viagens;
-    }
-
-    public void setViagens(List<Viagem> viagens) {
-        this.viagens = viagens;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 0;
