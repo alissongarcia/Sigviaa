@@ -38,6 +38,10 @@ public class CadastrarUsuarioNegocio {
         return djc.findDepartamentoEntities();
     }
     
+    public List<Usuario> getAdministrador(){
+        return ujc.findUsuarioEntities();
+    }
+    
     public Departamento getDepartamento(Key key){
         return djc.findDepartamento(key);
     }

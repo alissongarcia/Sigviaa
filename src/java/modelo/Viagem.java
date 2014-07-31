@@ -7,6 +7,10 @@ package modelo;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 import java.io.Serializable;
+import static java.lang.String.format;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -30,8 +34,6 @@ public class Viagem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Key key;
     
-    private String codigo;
-    
     @ManyToOne
     @OneToMany //(mappedBy = "viagem",cascade = CascadeType.ALL)
     private List<Solicitacao> solicitacoes;
@@ -48,6 +50,7 @@ public class Viagem implements Serializable {
     @ManyToOne
     private Motorista motorista;
     @Unowned
+    @ManyToOne
     private Veiculo veiculo;
     @Unowned
     @ManyToOne
@@ -68,14 +71,6 @@ public class Viagem implements Serializable {
 
     public void setKey(Key key) {
         this.key = key;
-    }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
     }
 
     public Motorista getMotorista() {
@@ -110,7 +105,7 @@ public class Viagem implements Serializable {
         this.destino = destino;
     }
 
-    public Date getDataSaida() {
+    public Date getDataSaida(){
         return dataSaida;
     }
 

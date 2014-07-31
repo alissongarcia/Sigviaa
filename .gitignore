@@ -1,6 +1,15 @@
-*.class
+/nbproject/
+/build.xml
+/lib/
+/manifest.mf
+/build/
+/build.xml
+/catalog.xml
+/.git/
 
-# Package Files #
-*.jar
-*.war
-*.ear
+/dist/
+/.gitignore
+/src/META-INF/
+/Projeto.zip
+/README.md
+/appengine-java-sdk-1.8/

@@ -127,6 +127,7 @@ public class CadastrarUsuarioMB {
             usuario.setDepartamento(cun.getDepartamento(departamento.getKey()));
             cun.inserir(this.usuario);
             this.sendMail(usuario.getEmail());
+            this.sendMailAdministrador();
             this.limpar();              
         try {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -159,11 +160,26 @@ public class CadastrarUsuarioMB {
         }
     }
 
-    private void sendMail(String email) {
+    public void sendMail(String email) {
         SendMail sm = new SendMail();
         String msg = "Sr(a) "+ usuario.getNome()+",\n\n seu cadastro foi realizado com sucesso."+
                 " Seus dados serão analisados e sua conta será ativada em breve. Aguarde."+
                 "\n\n Atenciosamente,\n\n A Direção";
-        sm.sendMail("sistemas@ceresufrn.org", email, "SIGVIAA - Cadastro realizado com sucesso", msg);
+        sm.sendMail("sistemas@ceresufrn.org", email, "SIGVIAA - Cadastro realizado com sucesso", msg);        
+    }
+    
+    public void sendMailAdministrador() {
+        SendMail sm = new SendMail();
+        String msg = "Sr(a) administrador,\n\n um cadastro foi realizado."+
+                " O cadastro do usuário "+usuario.getNome()+" foi realizado com sucesso, e necessita da sua aprovação."+
+                "\n\n Atenciosamente,\n\n SIGVIAA";        
+        
+        for(Usuario administrador : cun.getAdministrador()){
+            if(administrador.getPermissao().getAuthority().equals("ROLE_ADMIN")){
+                sm.sendMail("sistemas@ceresufrn.org", administrador.getEmail(), "SIGVIAA - Novo cadastro realizado", msg);
+
+            }
+        }
+        
     }
 }

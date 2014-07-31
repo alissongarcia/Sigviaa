@@ -28,30 +28,27 @@
                         <h:panelGrid columns="2" >
                             <h:inputHidden value="#{manterViagemMB.viagem.key}" converter="#{manterViagemMB.converter}"/><br/>
 
-                            <h:outputLabel for="campoCodigo" value="Código: *"/> 
-                            <p:inputText value="#{manterViagemMB.viagem.codigo}" id="campoCodigo" required="true" requiredMessage="Código Obrigatório." />  
-
                             <h:outputLabel for="campoMotorista" value="Motorista: *"/>
                             <p:selectOneMenu id="campoMotorista" value="#{manterViagemMB.motorista.key}" required="true" requiredMessage="Motorista obrigatório" converter="#{manterViagemMB.converter}">
+                                <f:selectItems  var="d" value="#{manterViagemMB.motoristas}" itemLabel="#{d.nome}" itemValue="#{d.key}" noSelectionValue="" />
                                 
-                                <f:selectItems var="d" value="#{manterViagemMB.motoristas}" itemLabel="#{d.nome}" itemValue="#{d.key}"/>
-                            </p:selectOneMenu>
+                            </p:selectOneMenu> 
 
                             <h:outputLabel for="campoVeiculo" value="Veículo: *"/>
                             <p:selectOneMenu id="campoVeiculo" value="#{manterViagemMB.veiculo.key}" required="true" requiredMessage="Veículo obrigatório" converter="#{manterViagemMB.converter}">
-                                
+
                                 <f:selectItems var="d" value="#{manterViagemMB.veiculos}" itemLabel="#{d.modelo}" itemValue="#{d.key}"/>
                             </p:selectOneMenu>
 
                             <h:outputLabel for="campoOrigem" value="Cidade Origem: *"/>
                             <p:selectOneMenu id="campoOrigem" value="#{manterViagemMB.origem.key}" required="true" requiredMessage="Cidade de origem obrigatório" converter="#{manterViagemMB.converter}">
-                                
-                                <f:selectItems var="d" noSelectionValue="Selecione..." value="#{manterViagemMB.cidades}" itemLabel="#{d.nome}" itemValue="#{d.key}"/>
+
+                                <f:selectItems var="d"  noSelectionValue="Selecione..." value="#{manterViagemMB.cidades}" itemLabel="#{d.nome}" itemValue="#{d.key}"/>
                             </p:selectOneMenu>
 
                             <h:outputLabel for="campoDestino" value="Cidade Destino: *"/>
                             <p:selectOneMenu id="campoDestino" value="#{manterViagemMB.destino.key}" required="true" requiredMessage="Cidade de destino obrigatório" converter="#{manterViagemMB.converter}">
-                                
+
                                 <f:selectItems var="d" noSelectionValue="Selecione..." value="#{manterViagemMB.cidades}" itemLabel="#{d.nome}" itemValue="#{d.key}"/>
                             </p:selectOneMenu>
 
@@ -94,14 +91,8 @@
                             <p:column headerText="Id" rendered="false" >
                                 #{u.key}
                             </p:column>
-                            <p:column headerText="Código" style="width:10%">
-                                #{u.codigo}
-                            </p:column>
                             <p:column headerText="Motorista">
                                 #{u.motorista.nome}                           
-                            </p:column>
-                            <p:column headerText="Veículo" style="width:10%">
-                                #{u.veiculo.modelo}
                             </p:column>
                             <p:column headerText="Cidade Origem" style="width:12%">
                                 #{u.origem.nome}
@@ -109,11 +100,18 @@
                             <p:column headerText="Cidade Destino" style="width:12%">
                                 #{u.destino.nome}
                             </p:column>
+                            <p:column headerText="Veículo" style="width:20%">
+                                #{u.veiculo.modelo}
+                            </p:column>
                             <p:column headerText="Data Saída" style="width:10%">
-                                #{u.dataSaida}
+                                <h:outputText value="#{u.dataSaida.time}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
                             </p:column>
                             <p:column headerText="Data Retorno" style="width:10%">
-                                #{u.dataRetorno}
+                                <h:outputText value="#{u.dataRetorno.time}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
                             </p:column>
                             <p:column headerText="Status" style="width:10%">
                                 #{u.status}
@@ -128,7 +126,7 @@
                                     <p:graphicImage value="/images/ajax-loader.gif"/> 
                                 </p:blockUI>
 
-                                <p:commandButton id="remover" icon="ui-icon-trash" update=":form1:tabelaPanel,:form:msg" actionListener="#{manterViagemMB.remover}">
+                                <p:commandButton id="remover" icon="ui-icon-trash" update=":form:,:form1:" actionListener="#{manterViagemMB.remover}">
                                     <p:confirm header="Confirmação" message="Deseja realmente excluir?" icon="ui-icon-alert"/>
                                 </p:commandButton>
                                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  

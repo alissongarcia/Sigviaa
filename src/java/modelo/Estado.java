@@ -29,7 +29,7 @@ public class Estado implements Serializable {
     private String nome;
     private String sigla;
     
-    @Unowned
+    //@Unowned
     @OneToMany (mappedBy = "estado",cascade = CascadeType.ALL)
     private List<Cidade> cidades;
     

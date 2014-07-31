@@ -40,25 +40,6 @@ public class ViagemJpaController implements Serializable {
     }
 
     public void create(Viagem viagem) throws RollbackFailureException, Exception {
-        /*EntityManager em = getEntityManager();
-        try {
-        em.getTransaction().begin();
-        em.persist(viagem);
-        em.getTransaction().commit();
-        } catch (Exception ex) {
-        try {
-        em.getTransaction().rollback();
-        } catch (Exception re) {
-        throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
-        }
-        System.out.println("Imprimindo...");
-        ex.printStackTrace();
-        throw ex;
-        } finally {
-        if (em != null) {
-        em.close();
-        }
-        }*/
         if (viagem.getSolicitacoes() == null) {
             viagem.setSolicitacoes(new ArrayList<Solicitacao>());
         }

@@ -25,7 +25,7 @@ public class CriarUsuario {
     private ManterGrupoNegocio mgn = new ManterGrupoNegocio();
 
     public CriarUsuario() {
-        if (mdn.getDepartamentos().size() == 0) {
+        /*if (mdn.getDepartamentos().size() == 0) {
             dep.setNome("LABICAN");
             mdn.inserir(dep);
         }else{
@@ -50,6 +50,6 @@ public class CriarUsuario {
             usr.setTelefone("22222222");
             usr.setUsername("administrador");
             mun.inserir(usr);
-        }
+        }*/
     }
 }

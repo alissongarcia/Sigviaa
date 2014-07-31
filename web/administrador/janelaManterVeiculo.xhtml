@@ -85,12 +85,12 @@
                                     <p:graphicImage value="/images/ajax-loader.gif"/> 
                             </p:blockUI>
                             
-                            <p:commandButton id="remover" icon="ui-icon-trash" update=":form1:tabelaPanel,:form:msg" actionListener="#{manterVeiculoMB.remover}">
+                            <p:commandButton id="remover" icon="ui-icon-trash" update=":form:,:form1:" actionListener="#{manterVeiculoMB.remover}">
                                 <p:confirm header="Confirmação" message="Deseja realmente excluir?" icon="ui-icon-alert"/>
                             </p:commandButton>
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
-                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
-                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  update=":form:,:form1:"/>  
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" update=":form:,:form1:"/>       
                             </p:confirmDialog>
                             <p:blockUI block=":form1:tabelaVeiculo" trigger="remover">  
                                     LOADING<br />  
