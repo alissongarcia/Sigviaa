@@ -6,10 +6,9 @@
 /build.xml
 /catalog.xml
 /.git/
-
 /dist/
 /.gitignore
 /src/META-INF/
-/Projeto.zip
+/Projeto.zip/
 /README.md
 /appengine-java-sdk-1.8/
