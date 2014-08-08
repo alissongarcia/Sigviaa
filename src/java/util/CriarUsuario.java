@@ -50,6 +50,6 @@ public class CriarUsuario {
             usr.setTelefone("22222222");
             usr.setUsername("administrador");
             mun.inserir(usr);
-        }*/
-    }
+        }
+*/    }
 }

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>SIGVIAA - Solicitação de Viagens</title>
+        </f:facet>
+    </head>
+    <body>
+        <p:layout id="layout" fullPage="true">
+            <p:layoutUnit  position="north" size="100" header="SIGVIAA - Sistema de Gerenciamento de Viagens Administrativas e Acadêmicas" resizable="false">                    
+                <p:outputLabel value="Bem vindo, #{usuarioLogadoMB.usuario.nome}."/>
+                <a href="./logout">Sair</a><br/>
+                <a href="Principal.xhtml">Voltar para página inicial</a>             
+            </p:layoutUnit>
+    
+            <p:layoutUnit id="solicitacaoLayout" resizable="true" position="center"  >                
+                <h:form id="form">
+
+                    <p:focus context="form"/>                
+                    <p:growl id="msg" sticky="true" />
+                    <p:panel id="formPanel" header="Solicitação" toggleable="true">                        
+                        <h:panelGrid columns="2" >
+                            <h:inputHidden value="#{manterSolicitacaoMB.solicitacao.key}" converter="#{manterSolicitacaoMB.converter}"/><br/>
+
+                            <h:outputLabel for="campoMotorista" value="Motorista: *"/>
+                            <p:selectOneMenu id="campoMotorista" value="#{manterSolicitacaoMB.motorista.key}" required="true" requiredMessage="Motorista obrigatório" converter="#{manterSolicitacaoMB.converter}">
+                                <f:selectItems  var="d" value="#{manterSolicitacaoMB.motoristas}" itemLabel="#{d.nome}" itemValue="#{d.key}" noSelectionValue="" />
+                                
+                            </p:selectOneMenu> 
+
+                            <h:outputLabel for="campoVeiculo" value="Veículo: *"/>
+                            <p:selectOneMenu id="campoVeiculo" value="#{manterSolicitacaoMB.veiculo.key}" required="true" requiredMessage="Veículo obrigatório" converter="#{manterSolicitacaoMB.converter}">
+
+                                <f:selectItems var="d" value="#{manterSolicitacaoMB.veiculos}" itemLabel="#{d.modelo}" itemValue="#{d.key}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel for="campoOrigem" value="Cidade Origem: *"/>
+                            <p:selectOneMenu id="campoOrigem" value="#{manterSolicitacaoMB.origem.key}" required="true" requiredMessage="Cidade de origem obrigatório" converter="#{manterViagemMB.converter}">
+
+                                <f:selectItems var="d"  noSelectionValue="Selecione..." value="#{manterSolicitacaoMB.cidades}" itemLabel="#{d.nome}" itemValue="#{d.key}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel for="campoDestino" value="Cidade Destino: *"/>
+                            <p:selectOneMenu id="campoDestino" value="#{manterSolicitacaoMB.destino.key}" required="true" requiredMessage="Cidade de destino obrigatório" converter="#{manterViagemMB.converter}">
+
+                                <f:selectItems var="d" noSelectionValue="Selecione..." value="#{manterSolicitacaoMB.cidades}" itemLabel="#{d.nome}" itemValue="#{d.key}"/>
+                            </p:selectOneMenu>
+
+
+                            <h:outputLabel for="campoDataSaida" value="Data Saida: *"/>  
+                            <p:calendar value="#{manterSolicitacaoMB.dataSaida}" id="popupCal" required="true" requiredMessage="Data Saída obrigatória."/> 
+
+                            <h:outputLabel for="campoDataVolta" value="Data Retorno: *" />  
+                            <p:calendar value="#{manterSolicitacaoMB.dataRetorno}" id="popupCal2" required="true" requiredMessage="Data Retorno é obrigatório."/> 
+
+                            <h:outputLabel for="campoStatus" value="Status: *"/> 
+                            <p:selectOneMenu value="#{manterSolicitacaoMB.status}" required="true" requiredMessage="Selecione um Status para a viagem.">
+                                <f:selectItem itemLabel="Selecione..." itemValue=""/>  
+                                <f:selectItem itemLabel="ABERTA" itemValue="Aberta"/>
+                                <f:selectItem itemLabel="ENCERRADA" itemValue="Encerrada"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel for="campoJustificativa" value="Justificativa: *"/> 
+                            <p:inputTextarea value="#{manterSolicitacaoMB.justificativa}" id="campoJustificativa" required="true" requiredMessage="Justificativa obrigatória." />  
+
+                        </h:panelGrid>
+
+                        <p:separator/>                        
+                        <p:commandButton id="botaoSalvar" styleClass="ui-priority-primary" value="Salvar" actionListener="#{manterViagemMB.inserir}" update=":form:,:form1:"/>
+                    </p:panel>
+                    <p:blockUI block=":form:formPanel" trigger=":form:botaoSalvar">
+                        LOADING<br />  
+                        <p:graphicImage value="/images/ajax-loader.gif"/> 
+                    </p:blockUI>
+                </h:form>                   
+                <h:form id="form1">                   
+
+                    <p:panel id="tabelaPanel">                        
+                        <p:dataTable id="tabelaSolicitacao" var="u" rowKey="#{u.key}" value="#{manterSolicitacaoMB.solicitacoes}" rows="13" paginator="true"
+                                     selection="#{manterSolicitacaoMB.selecionada}">
+                            <f:facet name="header">  
+                                Solicitacoes Cadastradas 
+                            </f:facet>
+                            <p:column selectionMode="single" style="width: 2%"/>
+                            <p:column headerText="Id" rendered="false" >
+                                #{u.key}
+                            </p:column>
+                            <p:column headerText="Motorista">
+                                #{u.motorista.nome}                           
+                            </p:column>
+                            <p:column headerText="Cidade Origem" style="width:12%">
+                                #{u.origem.nome}
+                            </p:column>
+                            <p:column headerText="Cidade Destino" style="width:12%">
+                                #{u.destino.nome}
+                            </p:column>
+                            <p:column headerText="Veículo" style="width:20%">
+                                #{u.veiculo.modelo}
+                            </p:column>
+                            <p:column headerText="Data Saída" style="width:10%">
+                                <h:outputText value="#{u.dataSaida.time}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Data Retorno" style="width:10%">
+                                <h:outputText value="#{u.dataRetorno.time}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Status" style="width:10%">
+                                #{u.status}
+                            </p:column>
+                            <p:column headerText="Justificativa">
+                                #{u.justificativa}
+                            </p:column>                        
+                            <f:facet name="footer">
+                                <p:commandButton id="editar" icon="ui-icon-pencil" update=":form:" actionListener="#{manterViagemMB.carregarParaEditar}"/>                            
+                                <p:blockUI block=":form:formPanel" trigger="editar">  
+                                    LOADING<br />  
+                                    <p:graphicImage value="/images/ajax-loader.gif"/> 
+                                </p:blockUI>
+
+                                <p:commandButton id="remover" icon="ui-icon-trash" update=":form:,:form1:" actionListener="#{manterViagemMB.remover}">
+                                    <p:confirm header="Confirmação" message="Deseja realmente excluir?" icon="ui-icon-alert"/>
+                                </p:commandButton>
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">  
+                                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                                </p:confirmDialog>
+                                <p:blockUI block=":form1:tabelaViagem" trigger="remover">  
+                                    LOADING<br />  
+                                    <p:graphicImage value="/images/ajax-loader.gif"/> 
+                                </p:blockUI>
+                            </f:facet>
+                        </p:dataTable>                                           
+                    </p:panel>
+                    <p:blockUI block="tabelaViagem" trigger="tabelaViagem">  
+                        LOADING<br />  
+                        <p:graphicImage value="/images/ajax-loader.gif"/> 
+                    </p:blockUI>                        
+                </h:form>                
+            </p:layoutUnit>           
+
+        </p:layout>
+    </body>
+</html>

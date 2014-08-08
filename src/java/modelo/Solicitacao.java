@@ -5,6 +5,7 @@
 package modelo;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -34,12 +35,16 @@ public class Solicitacao implements Serializable {
     private String tipoDaViagem;
     private int numDeViajantes;
     private String status;
+    @Unowned
     @ManyToOne
     private Usuario solicitante;
+    @Unowned
     @ManyToOne
     private Cidade origem;
+    @Unowned
     @ManyToOne
     private Cidade destino; 
+    @Unowned
     @ManyToOne
     private Viagem viagem;
 

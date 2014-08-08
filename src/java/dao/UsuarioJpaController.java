@@ -105,6 +105,9 @@ public class UsuarioJpaController implements Serializable {
                 attachedSolicitacoesNew.add(solicitacoesNewSolicitacaoToAttach);
             }
             solicitacoesNew = attachedSolicitacoesNew;
+            if(solicitacoesNew == null){
+                solicitacoesNew = new ArrayList<Solicitacao>();
+            }
             usuario.setSolicitacoes(solicitacoesNew);
             usuario = em.merge(usuario);
             for (Solicitacao solicitacoesOldSolicitacao : solicitacoesOld) {

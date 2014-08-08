@@ -56,7 +56,7 @@ public class Usuario implements UserDetails{
     @ManyToOne
     private Grupo permissao;
     
-    @Unowned    
+    @Unowned
     @ManyToOne
     private Departamento departamento;
     

@@ -7,21 +7,38 @@ package beans;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import modelo.Cidade;
+import modelo.Motorista;
 import modelo.Solicitacao;
+import modelo.Veiculo;
 import modelo.Viagem;
+import negocio.ManterCidadeNegocio;
+import negocio.ManterMotoristaNegocio;
 import negocio.ManterSolicitacaoNegocio;
+import negocio.ManterVeiculoNegocio;
 
 /**
  *
  * @author Alisson
  */
-public class ManterSolicitacao {
+public class ManterSolicitacaoMB {
     private Solicitacao solicitacao;
     private Solicitacao selecionada;
     private Viagem viagem;
-    private ManterSolicitacaoNegocio msn;
+    private Motorista motorista;
+    private Veiculo veiculo;
+    private Cidade origem;
+    private Cidade destino;
+    private String justificativa;
+    private String status;
     
-    public ManterSolicitacao(){
+    
+    private ManterSolicitacaoNegocio msn;
+    private ManterMotoristaNegocio mmn;
+    private ManterVeiculoNegocio mvn;
+    private ManterCidadeNegocio mcn;
+    
+    public ManterSolicitacaoMB(){
         
     }
     
@@ -53,8 +70,21 @@ public class ManterSolicitacao {
     }
     
     public List<Solicitacao> getSolicitacoes(){
-        return msn.getVeiculos();
+        return msn.getSolicitacoes();
     }
+    
+    public List<Motorista> getMotoristas() {
+        return mmn.getMotoristas();
+    }
+    
+    public List<Veiculo> getVeiculos() {
+        return mvn.getVeiculos();
+    }
+    
+    public List<Cidade> getCidades() {
+        return mcn.getCidades();
+    }
+    
     public int contador(){
         return msn.contador();
     }
@@ -70,4 +100,32 @@ public class ManterSolicitacao {
         veiculo.setAtivo(true);
         veiculo.setCapacidade(4);
     }*/
+    
+    public Solicitacao getSelecionada(){
+        return selecionada;
+    }
+    
+    public Motorista getMotorista(){
+        return motorista;
+    }
+    
+    public Veiculo getVeiculo(){
+        return veiculo;
+    }
+    
+    public Cidade getOrigem(){
+        return origem;
+    }
+    
+    public Cidade getDestino(){
+        return destino;
+    }
+    
+    public String getJustificativa() {
+        return justificativa;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
 }

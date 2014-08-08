@@ -39,8 +39,6 @@ public class Departamento implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
-    
 
     @Override
     public int hashCode() {

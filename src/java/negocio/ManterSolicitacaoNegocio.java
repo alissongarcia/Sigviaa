@@ -56,9 +56,11 @@ public class ManterSolicitacaoNegocio {
             Logger.getLogger(ManterVeiculoNegocio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public List<Solicitacao> getVeiculos(){
+    
+    public List<Solicitacao> getSolicitacoes(){
         return sjc.findSolicitacaoEntities();
     }
+    
     public int contador(){
         return sjc.getSolicitacaoCount();
     }

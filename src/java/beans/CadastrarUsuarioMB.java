@@ -54,7 +54,7 @@ public class CadastrarUsuarioMB {
     
     public CadastrarUsuarioMB() throws RollbackFailureException, Exception {
         
-        CriarUsuario newUsuario = new CriarUsuario();
+        //CriarUsuario newUsuario = new CriarUsuario();
                 
         cun = new CadastrarUsuarioNegocio();
         converter = new Converter() {

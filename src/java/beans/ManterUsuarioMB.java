@@ -176,7 +176,7 @@ public class ManterUsuarioMB {
                     FacesContext.getCurrentInstance().addMessage(null, msg);
                     usuario.setUsername(null);
                 }
-            }            
+            }
         }
     }
     

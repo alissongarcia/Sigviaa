@@ -77,9 +77,8 @@ public class AutenticacaoFilter extends UsernamePasswordAuthenticationFilter {
         response.sendRedirect("/faces/login.xhtml");
     }
  
-    /**
-     * Metodos de acesso ao BD
-     *
-     */
+    public void limparCampos(){
+        
+    }
     
 }
